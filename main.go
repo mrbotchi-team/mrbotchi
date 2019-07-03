@@ -5,20 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/mr-botchi/backend/app"
+	"github.com/mr-botchi/backend/handlers"
 )
 
 var version string
-
-type App struct {
-	router *chi.Mux
-}
-
-func NewApp() *App {
-	return &App{
-		router: chi.NewRouter(),
-	}
-}
 
 func main() {
 	fmt.Println(" _ __ ___  _ __")
@@ -32,8 +23,16 @@ func main() {
 	fmt.Println("          |_.__/ \\___/ \\__\\___|_| |_|_| Backend", version)
 	fmt.Println("Guten Morgen!!")
 
-	app := NewApp()
+	app := app.NewApp()
+
+	handlers := handlers.HandlerFactory()
+	for endpoint, handler := range handlers {
+		app.Router.Get(endpoint, handler.Get)
+		app.Router.Post(endpoint, handler.Post)
+		app.Router.Put(endpoint, handler.Put)
+		app.Router.Delete(endpoint, handler.Delete)
+	}
 
 	fmt.Println("I'm HTTP listen on :3000. Have a nice day!")
-	log.Fatalln(http.ListenAndServe(":3000", app.router))
+	log.Fatalln(http.ListenAndServe(":3000", app.Router))
 }
