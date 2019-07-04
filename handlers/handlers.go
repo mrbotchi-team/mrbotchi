@@ -2,6 +2,9 @@ package handlers
 
 import (
 	"net/http"
+
+	"github.com/mr-botchi/backend/app"
+	"github.com/mr-botchi/backend/error"
 )
 
 type (
@@ -12,28 +15,29 @@ type (
 		Delete(w http.ResponseWriter, r *http.Request)
 	}
 	Handler struct {
+		app *app.App
 	}
 )
 
 func (this Handler) Get(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusMethodNotAllowed)
+	error.NewMethodNotAllowed().Response(w, r)
 }
 
 func (this Handler) Post(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusMethodNotAllowed)
+	error.NewMethodNotAllowed().Response(w, r)
 }
 
 func (this Handler) Put(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusMethodNotAllowed)
+	error.NewMethodNotAllowed().Response(w, r)
 }
 
 func (this Handler) Delete(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusMethodNotAllowed)
+	error.NewMethodNotAllowed().Response(w, r)
 }
 
-func HandlerFactory() map[string]HandlerIf {
+func HandlerFactory(app *app.App) map[string]HandlerIf {
 	var results map[string]HandlerIf = map[string]HandlerIf{
-		"/ping": &PingHandler{},
+		"/ping": &PingHandler{Handler{app}},
 	}
 
 	return results

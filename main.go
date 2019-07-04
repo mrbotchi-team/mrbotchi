@@ -23,9 +23,9 @@ func main() {
 	fmt.Println("          |_.__/ \\___/ \\__\\___|_| |_|_| Backend", version)
 	fmt.Println("Guten Morgen!!")
 
-	app := app.NewApp()
+	app := app.NewApp(version)
 
-	handlers := handlers.HandlerFactory()
+	handlers := handlers.HandlerFactory(app)
 	for endpoint, handler := range handlers {
 		app.Router.Get(endpoint, handler.Get)
 		app.Router.Post(endpoint, handler.Post)

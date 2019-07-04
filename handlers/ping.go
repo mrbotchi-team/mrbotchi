@@ -1,14 +1,26 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+
+	"github.com/mr-botchi/backend/error"
 )
 
-type PingHandler struct {
-	Handler
-}
+type (
+	PingHandler struct {
+		Handler
+	}
+	pingResponse struct {
+		Message string `json:"message"`
+		Version string `json:"version"`
+	}
+)
 
-func (g PingHandler) Get(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Pong!")
+func (h PingHandler) Get(w http.ResponseWriter, r *http.Request) {
+	response := pingResponse{Message: "Guten Morgen!! I'm Mr Botchi! maybe backend!", Version: h.app.Version}
+
+	if err := json.NewEncoder(w).Encode(response); nil != err {
+		error.NewInternalServerError().Response(w, r)
+	}
 }
