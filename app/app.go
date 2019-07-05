@@ -10,6 +10,7 @@ import (
 
 type App struct {
 	Router  *chi.Mux
+	Config  *Config
 	Version string
 }
 
@@ -23,8 +24,11 @@ func NewApp(version string) *App {
 		error.NewEndpointNotFoundError().Response(w, r)
 	})
 
+	config := loadConfig()
+
 	return &App{
 		Router:  router,
+		Config:  config,
 		Version: version,
 	}
 }

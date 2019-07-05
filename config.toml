@@ -1,0 +1,9 @@
+host = "mrbotchi.test"
+port = 3000
+
+[database]
+host = "postgresql"
+port = 5432
+user = "mr-botchi"
+password = "qwerty"
+dbname = "mr-botchi"
