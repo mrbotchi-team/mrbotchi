@@ -2,8 +2,8 @@ host = "mrbotchi.test"
 port = 3000
 
 [database]
-host = "postgresql"
+host = "postgres"
 port = 5432
-user = "mr-botchi"
+user = "user"
 password = "qwerty"
-dbname = "mr-botchi"
+dbname = "mr_botchi"
