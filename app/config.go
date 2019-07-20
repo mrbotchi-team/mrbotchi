@@ -11,6 +11,7 @@ type (
 		Host string         `toml:"host"`
 		Port int            `toml:"port"`
 		DB   DatabaseConfig `toml:"database"`
+		User UserConfig     `toml:"user"`
 	}
 	DatabaseConfig struct {
 		Host     string `toml:"host"`
@@ -18,6 +19,11 @@ type (
 		User     string `toml:"user"`
 		Password string `toml:"password"`
 		DBname   string `toml:"dbname"`
+	}
+	UserConfig struct {
+		Name       string `toml:"name"`
+		PublicKey  string `toml:"public_key"`
+		PrivateKey string `toml:"private_key"`
 	}
 )
 
