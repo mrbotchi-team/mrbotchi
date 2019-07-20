@@ -1,6 +1,26 @@
 version: '3.7'
 
+x-template: &flyway-template
+  image: boxfuse/flyway:latest
+  volumes:
+    - ./flyway/sql:/flyway/sql
+    - ./flyway/conf:/flyway/conf
+  depends_on:
+    - postgres
+
 services:
+  flyway-clean:
+    <<: *flyway-template
+    command: clean
+
+  flyway-migrate:
+    <<: *flyway-template
+    command: migrate
+
+  flyway-info:
+    <<: *flyway-template
+    command: info
+
   postgres:
     image: postgres:12-alpine
     restart: always
