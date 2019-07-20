@@ -26,7 +26,7 @@ type (
 )
 
 func (h WebfingerHandler) Get(w http.ResponseWriter, r *http.Request) {
-	uri := r.FormValue("resouse")
+	uri := r.FormValue("resource")
 	log.Println(uri)
 
 	reg := regexp.MustCompile(`^acct:([a-zA-Z0-9_\-]+)@([a-zA-Z0-9_\-\.]+)`)
@@ -35,8 +35,15 @@ func (h WebfingerHandler) Get(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+	account := string(subject[1])
+	host := string(subject[2])
 
-	href := fmt.Sprintf("https://%s/%s", h.app.Config.Host, subject[1])
+	if h.app.Config.User.Name != account || h.app.Config.Host != host {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	href := fmt.Sprintf("https://%s/%s", h.app.Config.Host, account)
 
 	response := webfingerresponse{
 		Subject: string(subject[0]),
