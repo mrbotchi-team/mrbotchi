@@ -37,7 +37,9 @@ func (this Handler) Delete(w http.ResponseWriter, r *http.Request) {
 
 func HandlerFactory(app *app.App) map[string]HandlerIf {
 	var results map[string]HandlerIf = map[string]HandlerIf{
-		"/ping": &PingHandler{Handler{app}},
+		"/ping":                  &PingHandler{Handler{app}},
+		"/.well-known/host-meta": &HostMetaHandler{Handler{app}},
+		"/.well-known/webfinger": &WebfingerHandler{Handler{app}},
 	}
 
 	return results
