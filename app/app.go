@@ -24,6 +24,7 @@ func NewApp(version string) *App {
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
+	router.Use(middleware.GetHead)
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		error.NewEndpointNotFoundError().Response(w, r)
