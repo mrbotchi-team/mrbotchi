@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/mr-botchi/backend/error"
+	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type (

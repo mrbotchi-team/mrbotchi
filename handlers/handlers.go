@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/mr-botchi/backend/app"
-	"github.com/mr-botchi/backend/error"
+	"github.com/mrbotchi-team/mrbotchi/app"
+	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type (
@@ -37,6 +37,9 @@ func (this Handler) Delete(w http.ResponseWriter, r *http.Request) {
 
 func HandlerFactory(app *app.App) map[string]HandlerIf {
 	var results map[string]HandlerIf = map[string]HandlerIf{
+		"/{name}":                &AccountHandler{Handler{app}},
+		"/{name}/inbox":          &InboxHandler{Handler{app}},
+		"/{name}/outbox":         &OutboxHandler{Handler{app}},
 		"/ping":                  &PingHandler{Handler{app}},
 		"/.well-known/host-meta": &HostMetaHandler{Handler{app}},
 		"/.well-known/webfinger": &WebfingerHandler{Handler{app}},

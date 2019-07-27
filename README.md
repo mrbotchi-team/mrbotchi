@@ -1,4 +1,4 @@
-Mr Botchi Backend
+MrBotchi
 ===
 ***Let's get everything in your hand!***
 

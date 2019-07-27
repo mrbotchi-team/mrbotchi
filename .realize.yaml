@@ -11,6 +11,7 @@ schema:
   watcher:
     extensions:
     - go
+    - toml
     paths:
     - /
     ignored_paths:

@@ -9,7 +9,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/mr-botchi/backend/error"
+	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type App struct {

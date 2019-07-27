@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mr-botchi/backend/app"
-	"github.com/mr-botchi/backend/handlers"
+	"github.com/mrbotchi-team/mrbotchi/app"
+	"github.com/mrbotchi-team/mrbotchi/handlers"
 )
 
 var version string

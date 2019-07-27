@@ -21,9 +21,10 @@ type (
 		DBname   string `toml:"dbname"`
 	}
 	UserConfig struct {
-		Name       string `toml:"name"`
-		PublicKey  string `toml:"public_key"`
-		PrivateKey string `toml:"private_key"`
+		Name        string `toml:"name"`
+		DisplayName string `toml:"display_name"`
+		PublicKey   string `toml:"public_key"`
+		PrivateKey  string `toml:"private_key"`
 	}
 )
 
