@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"regexp"
 )
@@ -27,7 +26,6 @@ type (
 
 func (h WebfingerHandler) Get(w http.ResponseWriter, r *http.Request) {
 	uri := r.FormValue("resource")
-	log.Println(uri)
 
 	reg := regexp.MustCompile(`^acct:([a-zA-Z0-9_\-]+)@([a-zA-Z0-9_\-\.]+)`)
 	subject := reg.FindSubmatch([]byte(uri))
