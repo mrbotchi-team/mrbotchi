@@ -2,7 +2,7 @@ MrBotchi
 ===
 ***Let's get everything in your hand!***
 
-MrBotchi is federated social networking server **for single-user.** Since it exists within the Fediverse, It can communicate with other social networking platforms such as Mastodon, Misskey and Pleroma.
+MrBotchi is federated microblogging platform **for single-user.** Since it exists within the Fediverse, It can communicate with other social networking platforms such as Mastodon, Misskey and Pleroma.
 
 ## What is the "Botchi"?
 It's a word that means "people without friends" in Japanese.
