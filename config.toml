@@ -6,7 +6,7 @@ host = "postgres"
 port = 5432
 user = "user"
 password = "qwerty"
-dbname = "mr_botchi"
+dbname = "mrbotchi"
 
 # このオプションは廃止される予定です。
 # This option will be deprecated.

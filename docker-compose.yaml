@@ -1,7 +1,7 @@
 version: '3.7'
 
 x-template: &flyway-template
-  image: boxfuse/flyway:latest
+  image: boxfuse/flyway:latest-alpine
   volumes:
     - ./flyway/sql:/flyway/sql
     - ./flyway/conf:/flyway/conf
@@ -31,8 +31,23 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: qwerty
-      POSTGRES_DB: mr_botchi
-  
+      POSTGRES_DB: mrbotchi
+
+  mrbotchi:
+    build: 
+      context: .
+      target: dev
+    restart: always
+    links:
+      - postgres
+    volumes:
+      - ./:/go/src/github.com/mrbotchi-team/mrbotchi
+    command: realize start --run
+    ports:
+      - 3000:3000
+    networks: 
+      - internal_network
+
   https-portal:
     image: steveltn/https-portal:1
     restart: always
@@ -43,23 +58,8 @@ services:
       - internal_network
       - external_network
     environment:
-      DOMAINS: 'mrbotchi.test -> http://backend:3000'
+      DOMAINS: 'mrbotchi.test -> http://mrbotchi:3000'
       STAGE: 'local'
-
-  backend:
-    build: 
-      context: .
-      target: dev
-    restart: always
-    links:
-      - postgres
-    volumes:
-      - ./:/go/src/github.com/mr-botchi/backend
-    command: realize start --run
-    ports:
-      - 3000:3000
-    networks: 
-      - internal_network
 
 networks: 
   internal_network:

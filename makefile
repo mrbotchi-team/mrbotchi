@@ -1,4 +1,4 @@
-NAME := mr-bochi-be
+NAME := mrbotchi
 VERSION := v0.1.0
 
 SRCS:=$(shell find . -type f -name '*.go')
@@ -9,7 +9,7 @@ bin/$(NAME): $(SRCS)
 
 .PHONY: deps
 deps:
-	dep ensure
+	dep ensure -v -vendor-only=true
 
 .PHONY: clean
 clean:
