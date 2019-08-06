@@ -36,13 +36,14 @@ services:
   mrbotchi:
     build: 
       context: .
-      target: dev
+      target: prod
     restart: always
     links:
       - postgres
     volumes:
       - ./:/go/src/github.com/mrbotchi-team/mrbotchi
-    command: realize start --run
+      - ./.config:/.config
+    #command: realize start --run
     ports:
       - 3000:3000
     networks: 
