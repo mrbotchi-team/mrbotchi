@@ -31,8 +31,8 @@ type (
 func loadConfig() *Config {
 	var config Config
 
-	if _, err := toml.DecodeFile("config.toml", &config); nil != err {
-		log.Fatalln(err)
+	if _, err := toml.DecodeFile("/.config/mrbotchi.toml", &config); nil != err {
+		log.Fatalln("File not found!")
 	}
 
 	return &config
