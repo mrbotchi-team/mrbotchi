@@ -1,26 +1,6 @@
 version: '3.7'
 
-x-template: &flyway-template
-  image: boxfuse/flyway:latest-alpine
-  volumes:
-    - ./flyway/sql:/flyway/sql
-    - ./flyway/conf:/flyway/conf
-  depends_on:
-    - postgres
-
 services:
-  flyway-clean:
-    <<: *flyway-template
-    command: clean
-
-  flyway-migrate:
-    <<: *flyway-template
-    command: migrate
-
-  flyway-info:
-    <<: *flyway-template
-    command: info
-
   postgres:
     image: postgres:12-alpine
     restart: always
@@ -43,7 +23,6 @@ services:
     volumes:
       - ./:/go/src/github.com/mrbotchi-team/mrbotchi
       - ./.config:/.config
-    #command: realize start --run
     ports:
       - 3000:3000
     networks: 
