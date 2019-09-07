@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"log"
@@ -28,7 +28,7 @@ type (
 	}
 )
 
-func loadConfig() *Config {
+func LoadConfig() *Config {
 	var config Config
 
 	if _, err := toml.DecodeFile(".config/mrbotchi.toml", &config); nil != err {

@@ -9,12 +9,13 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/mrbotchi-team/mrbotchi/config"
 	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type App struct {
 	Router  *chi.Mux
-	Config  *Config
+	Config  *config.Config
 	DB      *sqlx.DB
 	Version string
 }
@@ -30,7 +31,7 @@ func NewApp(version string) *App {
 		error.NewEndpointNotFoundError().Response(w, r)
 	})
 
-	config := loadConfig()
+	config := config.LoadConfig()
 	db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%v user=%s password=%s dbname=%s sslmode=disable", config.DB.Host, config.DB.Port, config.DB.User, config.DB.Password, config.DB.DBname))
 	if nil != err {
 		log.Fatalln(err)
