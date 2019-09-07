@@ -9,9 +9,15 @@ import (
 	"github.com/mrbotchi-team/mrbotchi/handlers"
 )
 
-var version string
+var (
+	version  string
+	revision string
+)
 
-func main() {
+func PrintWakeupMessage() {
+	fmt.Println("==========================================================================================")
+	fmt.Print("\n")
+	fmt.Println("Developed by silverscat_3")
 	fmt.Println(" _ __ ___  _ __")
 	fmt.Println("| '_ ` _ \\| '__|")
 	fmt.Println("| | | | | | |")
@@ -20,8 +26,14 @@ func main() {
 	fmt.Println("          | |__   ___ | |_ ___| |__  _")
 	fmt.Println("          | '_ \\ / _ \\| __/ __| '_ \\| |")
 	fmt.Println("          | |_) | (_) | || (__| | | | |")
-	fmt.Println("          |_.__/ \\___/ \\__\\___|_| |_|_| Backend", version)
-	fmt.Println("Guten Morgen!!")
+	fmt.Println("          |_.__/ \\___/ \\__\\___|_| |_|_|")
+	fmt.Println("Version:", version, ",", "Revision:", revision)
+	fmt.Print("\n")
+	fmt.Println("==========================================================================================")
+}
+
+func main() {
+	PrintWakeupMessage()
 
 	app := app.NewApp(version)
 
