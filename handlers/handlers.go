@@ -40,7 +40,6 @@ func HandlerFactory(app *app.App) map[string]HandlerIf {
 		"/{name}":        &AccountHandler{Handler{app}},
 		"/{name}/inbox":  &InboxHandler{Handler{app}},
 		"/{name}/outbox": &OutboxHandler{Handler{app}},
-		"/ping":          &PingHandler{Handler{app}},
 	}
 
 	return results
