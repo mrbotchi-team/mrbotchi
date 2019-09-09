@@ -16,7 +16,7 @@ services:
   mrbotchi:
     build: 
       context: .
-      target: prod
+      target: dev
     restart: always
     links:
       - postgres

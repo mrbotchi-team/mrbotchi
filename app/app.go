@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/mrbotchi-team/mrbotchi/webfinger"
+	wf "github.com/writeas/go-webfinger"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/jmoiron/sqlx"
@@ -36,6 +39,11 @@ func NewApp(version string) *App {
 	if nil != err {
 		log.Fatalln(err)
 	}
+
+	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: config.User.Name, Host: config.Host})
+	webfinger.NoTLSHandler = nil
+
+	router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
 	return &App{
 		Router:  router,

@@ -10,6 +10,14 @@
   version = "v0.3.1"
 
 [[projects]]
+  branch = "master"
+  digest = "1:08ac96ecab3178fa1434de4e9597d3547aade074398e83c74acf6ac34366e944"
+  name = "github.com/captncraig/cors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e80254a89df15ac218dfd7dcdf67e15d045ef075"
+
+[[projects]]
   digest = "1:58c033da727ebd5a6769209e479cac9a6e4dab53c879631af3d8161423099d57"
   name = "github.com/go-chi/chi"
   packages = [
@@ -43,6 +51,14 @@
   revision = "bc6a3c0594130b1e34005880bc600b6d3f49fa7f"
   version = "v1.1.1"
 
+[[projects]]
+  digest = "1:ae4da785a90a9715dc6daffff0695ee52d90ede4d9a65adc0a721fe7436ee4e1"
+  name = "github.com/writeas/go-webfinger"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "824606d41058bd05c7e9d8b2dd2803341550f436"
+  version = "1.1.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -52,6 +68,7 @@
     "github.com/go-chi/chi/middleware",
     "github.com/jmoiron/sqlx",
     "github.com/lib/pq",
+    "github.com/writeas/go-webfinger",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
