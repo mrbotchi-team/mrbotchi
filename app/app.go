@@ -39,6 +39,9 @@ func NewApp() *App {
 		log.Fatalln(err)
 	}
 
+	hostMeta := webfinger.HostMetaHandler{Host: config.Host}
+	router.Get("/.well-known/host-meta", hostMeta.Get)
+
 	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: config.User.Name, Host: config.Host})
 	webfinger.NoTLSHandler = nil
 
