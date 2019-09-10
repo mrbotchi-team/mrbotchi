@@ -17,13 +17,12 @@ import (
 )
 
 type App struct {
-	Router  *chi.Mux
-	Config  *config.Config
-	DB      *sqlx.DB
-	Version string
+	Router *chi.Mux
+	Config *config.Config
+	DB     *sqlx.DB
 }
 
-func NewApp(version string) *App {
+func NewApp() *App {
 	router := chi.NewRouter()
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
@@ -46,9 +45,8 @@ func NewApp(version string) *App {
 	router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
 	return &App{
-		Router:  router,
-		Config:  config,
-		DB:      db,
-		Version: version,
+		Router: router,
+		Config: config,
+		DB:     db,
 	}
 }

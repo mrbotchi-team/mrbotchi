@@ -35,7 +35,7 @@ func PrintWakeupMessage() {
 func main() {
 	PrintWakeupMessage()
 
-	app := app.NewApp(version)
+	app := app.NewApp()
 
 	handlers := handlers.HandlerFactory(app)
 	for endpoint, handler := range handlers {
