@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/mrbotchi-team/mrbotchi/utils"
+
 	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
@@ -43,11 +45,11 @@ func newHostmeta(host string) *hostMeta {
 
 func (h HostMetaHandler) Get(w http.ResponseWriter, r *http.Request) {
 	response := newHostmeta(h.Host)
-
-	w.Header().Set("content-type", "application/xrd+xml")
-	w.WriteHeader(http.StatusOK)
-
-	if err := xml.NewEncoder(w).Encode(response); nil != err {
+	body, err := xml.Marshal(response)
+	if nil != err {
 		error.NewInternalServerError().Response(w, r)
+
 	}
+
+	utils.WriteBody(w, body, http.StatusOK, "application/xrd+xml")
 }

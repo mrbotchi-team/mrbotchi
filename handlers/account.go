@@ -8,6 +8,7 @@ import (
 
 	"github.com/mrbotchi-team/mrbotchi/activitystreams/actor"
 	"github.com/mrbotchi-team/mrbotchi/error"
+	"github.com/mrbotchi-team/mrbotchi/utils"
 )
 
 type (
@@ -25,11 +26,11 @@ func (h AccountHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 	person := actor.NewPerson(h.app.Config.Host, h.app.Config.User.Name, h.app.Config.User.DisplayName, h.app.Config.User.PublicKey)
 
-	w.Header().Set("content-type", "application/activity+json")
-	w.WriteHeader(http.StatusOK)
-
-	if err := json.NewEncoder(w).Encode(person); nil != err {
+	body, err := json.Marshal(person)
+	if nil != err {
 		error.NewInternalServerError().Response(w, r)
+
 	}
 
+	utils.WriteBody(w, body, http.StatusOK, "application/activity+json")
 }
