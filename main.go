@@ -17,7 +17,7 @@ var (
 	revision string
 )
 
-func PrintWakeupMessage() {
+func printWakeupMessage() {
 	fmt.Println("==========================================================================================")
 	fmt.Print("\n")
 	fmt.Println("Developed by silverscat_3")
@@ -36,7 +36,7 @@ func PrintWakeupMessage() {
 }
 
 func main() {
-	PrintWakeupMessage()
+	printWakeupMessage()
 
 	app := app.NewApp()
 
