@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	wf "github.com/writeas/go-webfinger"
 
@@ -55,6 +56,6 @@ func main() {
 		app.Router.Delete(endpoint, handlers.HandlerFunc(h.Delete).ServeHTTP)
 	}
 
-	fmt.Println("I'm HTTP listen on :3000. Have a nice day!")
-	log.Fatalln(http.ListenAndServe(":3000", app.Router))
+	fmt.Println("I'm HTTP listen on :" + strconv.Itoa(app.Config.Port) + ". Have a nice day!")
+	log.Fatalln(http.ListenAndServe(":"+strconv.Itoa(app.Config.Port), app.Router))
 }
