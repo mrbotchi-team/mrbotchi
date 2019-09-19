@@ -3,36 +3,46 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/mrbotchi-team/mrbotchi/utils"
+
 	"github.com/mrbotchi-team/mrbotchi/app"
-	"github.com/mrbotchi-team/mrbotchi/error"
+	"github.com/mrbotchi-team/mrbotchi/errors"
 )
 
 type (
 	HandlerIf interface {
-		Get(w http.ResponseWriter, r *http.Request)
-		Post(w http.ResponseWriter, r *http.Request)
-		Put(w http.ResponseWriter, r *http.Request)
-		Delete(w http.ResponseWriter, r *http.Request)
+		Get(w http.ResponseWriter, r *http.Request) error
+		Post(w http.ResponseWriter, r *http.Request) error
+		Put(w http.ResponseWriter, r *http.Request) error
+		Delete(w http.ResponseWriter, r *http.Request) error
 	}
 	Handler struct {
 		app *app.App
 	}
+	HandlerFunc func(http.ResponseWriter, *http.Request) error
 )
 
-func (this Handler) Get(w http.ResponseWriter, r *http.Request) {
-	error.NewMethodNotAllowed().Response(w, r)
+func (h Handler) Get(w http.ResponseWriter, r *http.Request) error {
+	return errors.MethodNotAllowed()
 }
 
-func (this Handler) Post(w http.ResponseWriter, r *http.Request) {
-	error.NewMethodNotAllowed().Response(w, r)
+func (h Handler) Post(w http.ResponseWriter, r *http.Request) error {
+	return errors.MethodNotAllowed()
 }
 
-func (this Handler) Put(w http.ResponseWriter, r *http.Request) {
-	error.NewMethodNotAllowed().Response(w, r)
+func (h Handler) Put(w http.ResponseWriter, r *http.Request) error {
+	return errors.MethodNotAllowed()
 }
 
-func (this Handler) Delete(w http.ResponseWriter, r *http.Request) {
-	error.NewMethodNotAllowed().Response(w, r)
+func (h Handler) Delete(w http.ResponseWriter, r *http.Request) error {
+	return errors.MethodNotAllowed()
+}
+
+func (h HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	err := h(w, r)
+	if nil != err {
+		utils.WriteError(w, errors.InternalServerError())
+	}
 }
 
 func HandlerFactory(app *app.App) map[string]HandlerIf {

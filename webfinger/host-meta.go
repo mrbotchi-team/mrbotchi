@@ -6,8 +6,6 @@ import (
 	"net/http"
 
 	"github.com/mrbotchi-team/mrbotchi/utils"
-
-	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type (
@@ -43,13 +41,13 @@ func newHostmeta(host string) *hostMeta {
 	}
 }
 
-func (h HostMetaHandler) Get(w http.ResponseWriter, r *http.Request) {
+func (h HostMetaHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	response := newHostmeta(h.Host)
 	body, err := xml.Marshal(response)
 	if nil != err {
-		error.NewInternalServerError().Response(w, r)
-
+		return err
 	}
 
 	utils.WriteBody(w, body, http.StatusOK, "application/xrd+xml")
+	return nil
 }

@@ -5,15 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mrbotchi-team/mrbotchi/webfinger"
-	wf "github.com/writeas/go-webfinger"
+	"github.com/mrbotchi-team/mrbotchi/errors"
+	"github.com/mrbotchi-team/mrbotchi/utils"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/mrbotchi-team/mrbotchi/config"
-	"github.com/mrbotchi-team/mrbotchi/error"
 )
 
 type App struct {
@@ -30,7 +29,7 @@ func NewApp() *App {
 	router.Use(middleware.GetHead)
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
-		error.NewEndpointNotFoundError().Response(w, r)
+		utils.WriteError(w, errors.EndpointNotFoundError())
 	})
 
 	config := config.LoadConfig()
@@ -38,14 +37,6 @@ func NewApp() *App {
 	if nil != err {
 		log.Fatalln(err)
 	}
-
-	hostMeta := webfinger.HostMetaHandler{Host: config.Host}
-	router.Get("/.well-known/host-meta", hostMeta.Get)
-
-	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: config.User.Name, Host: config.Host})
-	webfinger.NoTLSHandler = nil
-
-	router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
 	return &App{
 		Router: router,
