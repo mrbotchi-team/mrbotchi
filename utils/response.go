@@ -21,11 +21,11 @@ func WriteBody(w http.ResponseWriter, body []byte, status int, contentType strin
 func WriteError(w http.ResponseWriter, e error) {
 	if err, ok := e.(errors.APIError); ok {
 		body, _ := json.Marshal(err)
-		WriteBody(w, body, err.StatusCode, "application/json")
+		WriteBody(w, body, err.StatusCode, "application/json") //nolint
 		return
 	}
 	if err, ok := e.(errors.HTTPError); ok {
-		WriteBody(w, []byte(err.Message), err.StatusCode, "text/plain")
+		WriteBody(w, []byte(err.Message), err.StatusCode, "text/plain") //nolint
 		return
 	}
 
@@ -33,5 +33,5 @@ func WriteError(w http.ResponseWriter, e error) {
 
 	err := errors.InternalServerError()
 	body, _ := json.Marshal(err)
-	WriteBody(w, body, err.StatusCode, "application/json")
+	WriteBody(w, body, err.StatusCode, "application/json") //nolint
 }

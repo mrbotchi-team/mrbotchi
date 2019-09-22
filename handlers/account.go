@@ -30,6 +30,5 @@ func (h AccountHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	utils.WriteBody(w, body, http.StatusOK, "application/activity+json")
-	return nil
+	return utils.WriteBody(w, body, http.StatusOK, "application/activity+json")
 }
