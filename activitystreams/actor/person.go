@@ -1,42 +1,61 @@
 package actor
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
 
-type Person struct {
-	Context           []string `json:"@context"`
-	ID                string   `json:"id"`
-	Type              string   `json:"type"`
-	PreferredUserName string   `json:"preferredUsername"`
-	Inbox             string   `json:"inbox"`
-	Outbox            string   `json:"outbox"`
-	PublicKey         struct {
+	"github.com/mrbotchi-team/mrbotchi/activitystreams"
+)
+
+type (
+	Person struct {
+		*activitystreams.Object
+		Following                 string   `json:"following"`
+		Followers                 string   `json:"followers"`
+		Liked                     string   `json:"liked"`
+		Inbox                     string   `json:"inbox"`
+		Outbox                    string   `json:"outbox"`
+		Endpoints                 Endpoint `json:"endpoints"`
+		PreferredUsername         string   `json:"preferredUsername"`
+		Name                      string   `json:"name"`
+		Summary                   string   `json:"summary"`
+		ManuallyApprovesFollowers bool     `json:"manuallyApprovesFollowers"`
+		PublicKey                 PubKey   `json:"publicKey"`
+	}
+	Endpoint struct {
+		SharedInbox string `json:"sharedInbox"`
+	}
+	PubKey struct {
 		ID           string `json:"id"`
+		Type         string `json:"type"`
 		Owner        string `json:"owner"`
 		PublicKeyPem string `json:"publicKeyPem"`
-	} `json:"publickey"`
-}
+	}
+)
 
-func NewPerson(host, name, preferred_username, publickey string) *Person {
+func NewPerson(host, name, display_name, summary, publicKey string) *Person {
 	id := fmt.Sprintf("https://%s/%s", host, name)
+	following := strings.Join([]string{id, "/following"}, "")
+	followers := strings.Join([]string{id, "/followers"}, "")
+	liked := strings.Join([]string{id, "/liked"}, "")
+	inbox := strings.Join([]string{id, "/inbox"}, "")
+	outbox := strings.Join([]string{id, "/outbox"}, "")
+	publicKeyID := strings.Join([]string{id, "/publickey"}, "")
+
+	object := activitystreams.NewObject([]string{"https://w3id.org/security/v1"}, "Person", id, name)
 
 	return &Person{
-		Context: []string{
-			"https://www.w3.org/ns/activitystreams",
-			"https://w3id.org/security/v1",
-		},
-		ID:                id,
-		Type:              "Person",
-		PreferredUserName: preferred_username,
-		Inbox:             fmt.Sprintf("%s/inbox", id),
-		Outbox:            fmt.Sprintf("%s/outbox", id),
-		PublicKey: struct {
-			ID           string `json:"id"`
-			Owner        string `json:"owner"`
-			PublicKeyPem string `json:"publicKeyPem"`
-		}{
-			ID:           fmt.Sprintf("%s/pubkey", id),
-			Owner:        id,
-			PublicKeyPem: publickey,
-		},
+		Object:                    object,
+		Following:                 following,
+		Followers:                 followers,
+		Liked:                     liked,
+		Inbox:                     inbox,
+		Outbox:                    outbox,
+		Endpoints:                 Endpoint{SharedInbox: inbox},
+		PreferredUsername:         name,
+		ManuallyApprovesFollowers: false,
+		Name:                      display_name,
+		Summary:                   summary,
+		PublicKey:                 PubKey{ID: publicKeyID, Type: "Key", Owner: id, PublicKeyPem: publicKey},
 	}
 }

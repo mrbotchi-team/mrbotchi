@@ -23,12 +23,12 @@ func (h AccountHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return nil
 	}
 
-	person := actor.NewPerson(h.app.Config.Host, h.app.Config.User.Name, h.app.Config.User.DisplayName, h.app.Config.User.PublicKey)
+	person := actor.NewPerson(h.app.Config.Host, h.app.Config.User.Name, h.app.Config.User.DisplayName, "I'm Botchi.", h.app.Config.User.PublicKey)
 
 	body, err := json.Marshal(person)
 	if nil != err {
 		return err
 	}
 
-	return utils.WriteBody(w, body, http.StatusOK, "application/activity+json")
+	return utils.WriteBody(w, body, http.StatusOK, "application/activity+json; charset=utf8")
 }
