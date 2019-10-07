@@ -39,9 +39,10 @@ func printWakeupMessage() {
 
 func handlerFactory(app *app.App) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
-		"/{name}":        &activitypub.ActorHandler{handler.HTTPHandler{app}},
-		"/{name}/inbox":  &activitypub.InboxHandler{handler.HTTPHandler{app}},
-		"/{name}/outbox": &activitypub.OutboxHandler{handler.HTTPHandler{app}},
+		"/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
+		"/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},
+		"/{name}/outbox":    &activitypub.OutboxHandler{handler.HTTPHandler{app}},
+		"/{name}/publickey": &handler.PublickeyHandler{handler.HTTPHandler{app}},
 	}
 
 	return results
