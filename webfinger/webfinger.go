@@ -21,7 +21,7 @@ func (resolver WebfingerResolver) FindUser(username, hostname, requestHost strin
 		Subject: "acct:" + username + "@" + hostname,
 		Links: []webfinger.Link{
 			{
-				HRef: fmt.Sprintf("https://%s/%s", hostname, username),
+				HRef: fmt.Sprintf("https://%s/accounts/%s", hostname, username),
 				Type: "application/activity+json",
 				Rel:  "self",
 			},

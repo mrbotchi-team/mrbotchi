@@ -34,10 +34,11 @@ type (
 )
 
 func NewPerson(host, name, display_name, summary, publicKey string) *Person {
-	id := fmt.Sprintf("https://%s/%s", host, name)
+	id := fmt.Sprintf("https://%s/accounts/%s", host, name)
 	following := strings.Join([]string{id, "/following"}, "")
 	followers := strings.Join([]string{id, "/followers"}, "")
 	liked := strings.Join([]string{id, "/liked"}, "")
+	sharedInbox := strings.Join([]string{host, "/inbox"}, "")
 	inbox := strings.Join([]string{id, "/inbox"}, "")
 	outbox := strings.Join([]string{id, "/outbox"}, "")
 	publicKeyID := strings.Join([]string{id, "/publickey"}, "")
@@ -51,7 +52,7 @@ func NewPerson(host, name, display_name, summary, publicKey string) *Person {
 		Liked:                     liked,
 		Inbox:                     inbox,
 		Outbox:                    outbox,
-		Endpoints:                 Endpoint{SharedInbox: inbox},
+		Endpoints:                 Endpoint{SharedInbox: sharedInbox},
 		PreferredUsername:         name,
 		ManuallyApprovesFollowers: false,
 		Name:                      display_name,

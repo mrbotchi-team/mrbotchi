@@ -25,7 +25,7 @@ func (h PublickeyHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return nil
 	}
 
-	id := fmt.Sprintf("https://%s/%s", h.App.Config.Host, name)
+	id := fmt.Sprintf("https://%s/accounts/%s", h.App.Config.Host, name)
 	endpoint := strings.Join([]string{id, "/publickey"}, "")
 	publickey := securityvocabulary.NewKey(endpoint, id, h.App.Config.User.PublicKey)
 

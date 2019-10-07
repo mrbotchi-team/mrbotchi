@@ -31,3 +31,13 @@ func MethodNotAllowed() APIError {
 		},
 	}
 }
+
+func ImSchwimmwagen() APIError {
+	return APIError{
+		ErrorID: "IM_SCHWIMMWAGEN",
+		HTTPError: HTTPError{
+			StatusCode: http.StatusTeapot,
+			Message:    "I broke your teapot. So sorry...",
+		},
+	}
+}
