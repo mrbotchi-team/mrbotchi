@@ -34,5 +34,5 @@ func (h PublickeyHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	return utils.WriteBody(w, body, http.StatusOK, "application/activity+json; charset=utf8")
+	return utils.WriteBody(w, body, http.StatusOK, "application/ld+json; charset=utf8")
 }
