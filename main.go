@@ -8,8 +8,9 @@ import (
 
 	wf "github.com/writeas/go-webfinger"
 
+	"github.com/mrbotchi-team/mrbotchi/activitypub"
 	"github.com/mrbotchi-team/mrbotchi/app"
-	"github.com/mrbotchi-team/mrbotchi/handlers"
+	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
 )
 
@@ -36,24 +37,34 @@ func printWakeupMessage() {
 	fmt.Println("==========================================================================================")
 }
 
+func handlerFactory(app *app.App) map[string]handler.HandlerIf {
+	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
+		"/{name}":        &activitypub.ActorHandler{handler.HTTPHandler{app}},
+		"/{name}/inbox":  &activitypub.InboxHandler{handler.HTTPHandler{app}},
+		"/{name}/outbox": &activitypub.OutboxHandler{handler.HTTPHandler{app}},
+	}
+
+	return results
+}
+
 func main() {
 	printWakeupMessage()
 
 	app := app.NewApp()
 
 	hostMeta := webfinger.HostMetaHandler{Host: app.Config.Host}
-	app.Router.Get("/.well-known/host-meta", handlers.HandlerFunc(hostMeta.Get).ServeHTTP)
+	app.Router.Get("/.well-known/host-meta", handler.HandlerFunc(hostMeta.Get).ServeHTTP)
 
 	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: app.Config.User.Name, Host: app.Config.Host})
 	webfinger.NoTLSHandler = nil
 	app.Router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
-	hs := handlers.HandlerFactory(app)
+	hs := handlerFactory(app)
 	for endpoint, h := range hs {
-		app.Router.Get(endpoint, handlers.HandlerFunc(h.Get).ServeHTTP)
-		app.Router.Post(endpoint, handlers.HandlerFunc(h.Post).ServeHTTP)
-		app.Router.Put(endpoint, handlers.HandlerFunc(h.Put).ServeHTTP)
-		app.Router.Delete(endpoint, handlers.HandlerFunc(h.Delete).ServeHTTP)
+		app.Router.Get(endpoint, handler.HandlerFunc(h.Get).ServeHTTP)
+		app.Router.Post(endpoint, handler.HandlerFunc(h.Post).ServeHTTP)
+		app.Router.Put(endpoint, handler.HandlerFunc(h.Put).ServeHTTP)
+		app.Router.Delete(endpoint, handler.HandlerFunc(h.Delete).ServeHTTP)
 	}
 
 	fmt.Println("I'm HTTP listen on :" + strconv.Itoa(app.Config.Port) + ". Have a nice day!")

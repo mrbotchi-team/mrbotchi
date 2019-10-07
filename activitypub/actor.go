@@ -1,4 +1,4 @@
-package handlers
+package activitypub
 
 import (
 	"encoding/json"
@@ -7,23 +7,24 @@ import (
 	"github.com/go-chi/chi"
 
 	"github.com/mrbotchi-team/mrbotchi/activitystreams/actor"
+	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/utils"
 )
 
 type (
-	AccountHandler struct {
-		Handler
+	ActorHandler struct {
+		handler.HTTPHandler
 	}
 )
 
-func (h AccountHandler) Get(w http.ResponseWriter, r *http.Request) error {
+func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	name := chi.URLParam(r, "name")
-	if h.app.Config.User.Name != name {
+	if h.App.Config.User.Name != name {
 		w.WriteHeader(http.StatusNotFound)
 		return nil
 	}
 
-	person := actor.NewPerson(h.app.Config.Host, h.app.Config.User.Name, h.app.Config.User.DisplayName, "I'm Botchi.", h.app.Config.User.PublicKey)
+	person := actor.NewPerson(h.App.Config.Host, h.App.Config.User.Name, h.App.Config.User.DisplayName, "I'm Botchi.", h.App.Config.User.PublicKey)
 
 	body, err := json.Marshal(person)
 	if nil != err {

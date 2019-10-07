@@ -1,12 +1,14 @@
-package handlers
+package activitypub
 
 import (
 	"net/http"
+
+	"github.com/mrbotchi-team/mrbotchi/handler"
 )
 
 type (
 	OutboxHandler struct {
-		Handler
+		handler.HTTPHandler
 	}
 )
 
