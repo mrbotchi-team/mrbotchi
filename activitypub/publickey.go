@@ -1,4 +1,4 @@
-package handler
+package activitypub
 
 import (
 	"encoding/json"
@@ -8,13 +8,14 @@ import (
 
 	"github.com/go-chi/chi"
 
+	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/securityvocabulary"
 	"github.com/mrbotchi-team/mrbotchi/utils"
 )
 
 type (
 	PublickeyHandler struct {
-		HTTPHandler
+		handler.HTTPHandler
 	}
 )
 

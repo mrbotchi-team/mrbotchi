@@ -9,6 +9,7 @@ import (
 	wf "github.com/writeas/go-webfinger"
 
 	"github.com/mrbotchi-team/mrbotchi/activitypub"
+	"github.com/mrbotchi-team/mrbotchi/api"
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
@@ -39,11 +40,12 @@ func printWakeupMessage() {
 
 func handlerFactory(app *app.App) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
-		"/schwimmwagen":              &handler.SchwimmwagenHandler{handler.HTTPHandler{app}},
+		"/schwimmwagen": &api.SchwimmwagenHandler{handler.HTTPHandler{app}},
+
 		"/accounts/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{handler.HTTPHandler{app}},
-		"/accounts/{name}/publickey": &handler.PublickeyHandler{handler.HTTPHandler{app}},
+		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{handler.HTTPHandler{app}},
 	}
 
 	return results
