@@ -1,9 +1,10 @@
 package webfinger
 
 import (
-	"errors"
 	"fmt"
+	"net/http"
 
+	"github.com/mrbotchi-team/mrbotchi/errors"
 	"github.com/writeas/go-webfinger"
 )
 
@@ -14,7 +15,7 @@ type WebfingerResolver struct {
 
 func (resolver WebfingerResolver) FindUser(username, hostname, requestHost string, r []webfinger.Rel) (*webfinger.Resource, error) {
 	if resolver.UserName != username || resolver.Host != hostname {
-		return nil, errors.New("Not found")
+		return nil, errors.HTTPError{StatusCode: http.StatusNotFound}
 	}
 
 	res := webfinger.Resource{
@@ -32,9 +33,9 @@ func (resolver WebfingerResolver) FindUser(username, hostname, requestHost strin
 }
 
 func (resolver WebfingerResolver) DummyUser(username string, hostname string, r []webfinger.Rel) (*webfinger.Resource, error) {
-	return nil, errors.New("Not found")
+	return nil, errors.HTTPError{StatusCode: http.StatusNotFound}
 }
 
 func (resolver WebfingerResolver) IsNotFoundError(err error) bool {
-	return err == errors.New("Not found")
+	return err == errors.HTTPError{StatusCode: http.StatusNotFound}
 }
