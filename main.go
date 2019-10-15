@@ -10,6 +10,7 @@ import (
 
 	"github.com/mrbotchi-team/mrbotchi/activitypub"
 	"github.com/mrbotchi-team/mrbotchi/api"
+	"github.com/mrbotchi-team/mrbotchi/api/users"
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
@@ -41,6 +42,9 @@ func printWakeupMessage() {
 func handlerFactory(app *app.App) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
 		"/schwimmwagen": &api.SchwimmwagenHandler{handler.HTTPHandler{app}},
+
+		"/users":              &users.UsersHandler{handler.HTTPHandler{app}},
+		"/users/{name}/token": &users.TokenHandler{handler.HTTPHandler{app}},
 
 		"/accounts/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},

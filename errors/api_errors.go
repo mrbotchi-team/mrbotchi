@@ -1,6 +1,9 @@
 package errors
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func EndpointNotFoundError() APIError {
 	return APIError{
@@ -38,6 +41,36 @@ func ImSchwimmwagen() APIError {
 		HTTPError: HTTPError{
 			StatusCode: http.StatusTeapot,
 			Message:    "I broke your teapot. So sorry...",
+		},
+	}
+}
+
+func InvalidRequest() APIError {
+	return APIError{
+		ErrorID: "INVALID_REQUEST",
+		HTTPError: HTTPError{
+			StatusCode: http.StatusBadRequest,
+			Message:    "This request is invalid.",
+		},
+	}
+}
+
+func InvalidCT(contentType string) APIError {
+	return APIError{
+		ErrorID: "INVALID_CONTENTTYPE",
+		HTTPError: HTTPError{
+			StatusCode: http.StatusBadRequest,
+			Message:    fmt.Sprintf("Can't accept this request. Because Content-Type isn't %s.", contentType),
+		},
+	}
+}
+
+func AuthFailed() APIError {
+	return APIError{
+		ErrorID: "AUTH_FAILED",
+		HTTPError: HTTPError{
+			StatusCode: http.StatusForbidden,
+			Message:    "username or password is incorrect.",
 		},
 	}
 }

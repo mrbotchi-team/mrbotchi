@@ -1,5 +1,6 @@
 host = "mrbotchi.test"
 port = 3000
+paseto_key = "3mIzbGcvJxZoAi2vpM65HvA6R61VyEht"
 
 [database]
 host = "postgres"
@@ -7,6 +8,13 @@ port = 5432
 user = "user"
 password = "qwerty"
 dbname = "mrbotchi"
+
+[argon2]
+memory_cost = 64
+iteration_cost = 4
+parallelism = 2
+salt_length = 16
+key_length = 32
 
 # このオプションは廃止される予定です。
 # This option will be deprecated.

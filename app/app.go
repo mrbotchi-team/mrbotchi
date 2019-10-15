@@ -13,12 +13,14 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/mrbotchi-team/mrbotchi/config"
+	validate "gopkg.in/go-playground/validator.v9"
 )
 
 type App struct {
-	Router *chi.Mux
-	Config *config.Config
-	DB     *sqlx.DB
+	Router   *chi.Mux
+	Config   *config.Config
+	DB       *sqlx.DB
+	Validate *validate.Validate
 }
 
 func NewApp() *App {
@@ -38,9 +40,12 @@ func NewApp() *App {
 		log.Fatalln(err)
 	}
 
+	validate := validate.New()
+
 	return &App{
-		Router: router,
-		Config: config,
-		DB:     db,
+		Router:   router,
+		Config:   config,
+		DB:       db,
+		Validate: validate,
 	}
 }
