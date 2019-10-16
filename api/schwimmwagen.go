@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	handler "github.com/mrbotchi-team/mrbotchi/handler"
+	"github.com/mrbotchi-team/mrbotchi/handler"
 
 	"github.com/mrbotchi-team/mrbotchi/errors"
 )
