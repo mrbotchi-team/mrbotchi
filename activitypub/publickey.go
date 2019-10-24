@@ -28,9 +28,18 @@ func (h PublickeyHandler) Get(w http.ResponseWriter, r *http.Request) error {
 
 	id := fmt.Sprintf("https://%s/accounts/%s", h.App.Config.Host, name)
 	endpoint := strings.Join([]string{id, "/publickey"}, "")
-	publickey := securityvocabulary.NewKey(endpoint, id, h.App.Config.User.PublicKey)
+	publickey := securityvocabulary.NewPublicKey(endpoint, id, h.App.Config.User.PublicKey)
 
-	body, err := json.Marshal(publickey)
+	type alias securityvocabulary.PublicKey
+	p := &struct {
+		Context string `json:"@context"`
+		*alias
+	}{
+		Context: "https://w3id.org/security/v1",
+		alias:   (*alias)(publickey),
+	}
+
+	body, err := json.Marshal(p)
 	if nil != err {
 		return err
 	}

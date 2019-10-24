@@ -2,18 +2,33 @@ package activitypub
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi"
 
-	"github.com/mrbotchi-team/mrbotchi/activitystreams/actor"
+	"github.com/mrbotchi-team/mrbotchi/activitystreams"
 	"github.com/mrbotchi-team/mrbotchi/handler"
+	"github.com/mrbotchi-team/mrbotchi/securityvocabulary"
 	"github.com/mrbotchi-team/mrbotchi/utils"
 )
 
 type (
 	ActorHandler struct {
 		handler.HTTPHandler
+	}
+	actorResponse struct {
+		*activitystreams.Actor
+		Following                 string                        `json:"following"`
+		Followers                 string                        `json:"followers"`
+		Liked                     string                        `json:"liked"`
+		Inbox                     string                        `json:"inbox"`
+		Outbox                    string                        `json:"outbox"`
+		PreferredUsername         string                        `json:"preferredUsername"`
+		Summary                   string                        `json:"summary"`
+		ManuallyApprovesFollowers bool                          `json:"manuallyApprovesFollowers"`
+		PublicKey                 *securityvocabulary.PublicKey `json:"publicKey"`
 	}
 )
 
@@ -24,9 +39,46 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return nil
 	}
 
-	person := actor.NewPerson(h.App.Config.Host, h.App.Config.User.Name, h.App.Config.User.DisplayName, "I'm Botchi.", h.App.Config.User.PublicKey)
+	id := fmt.Sprintf("https://%s/%s", h.App.Config.Host, name)
+	following := strings.Join([]string{id, "following"}, "/")
+	followers := strings.Join([]string{id, "followers"}, "/")
+	liked := strings.Join([]string{id, "liked"}, "/")
+	inbox := strings.Join([]string{id, "inbox"}, "/")
+	outbox := strings.Join([]string{id, "outbox"}, "/")
 
-	body, err := json.Marshal(person)
+	publicKeyEndpoint := strings.Join([]string{id, "publickey"}, "/")
+	publickey := securityvocabulary.NewPublicKey(publicKeyEndpoint, id, h.App.Config.User.PublicKey)
+
+	person := actorResponse{
+		Actor: &activitystreams.Actor{
+			ID:   id,
+			Type: "Person",
+			Name: name,
+		},
+		Following:                 following,
+		Followers:                 followers,
+		Liked:                     liked,
+		Inbox:                     inbox,
+		Outbox:                    outbox,
+		PreferredUsername:         h.App.Config.User.DisplayName,
+		Summary:                   "I'm a Botchi",
+		ManuallyApprovesFollowers: false,
+		PublicKey:                 publickey,
+	}
+
+	type alias actorResponse
+	p := &struct {
+		Context []string `json:"@context"`
+		*alias
+	}{
+		Context: []string{
+			"https://www.w3.org/ns/activitystreams",
+			"https://w3id.org/security/v1",
+		},
+		alias: (*alias)(&person),
+	}
+
+	body, err := json.Marshal(p)
 	if nil != err {
 		return err
 	}
