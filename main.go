@@ -46,7 +46,6 @@ func handlerFactory(app *app.App) map[string]handler.HandlerIf {
 		"/users":              &users.UsersHandler{handler.HTTPHandler{app}},
 		"/users/{name}/token": &users.TokenHandler{handler.HTTPHandler{app}},
 
-		"/inbox":                     &activitypub.SharedInboxHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{handler.HTTPHandler{app}},
