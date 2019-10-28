@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: mrbotchi
 
   mrbotchi:
-    build: 
+    build:
       context: .
       target: dev
     restart: always
@@ -27,6 +27,7 @@ services:
       - 3000:3000
     networks: 
       - internal_network
+      - external_network
 
   https-portal:
     image: steveltn/https-portal:1

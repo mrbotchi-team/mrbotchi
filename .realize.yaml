@@ -3,15 +3,18 @@ settings:
     force: false
     interval: 0s
 schema:
-- name: backend
+- name: mrbotchi
   path: .
-  commands: 
+  commands:
+    install:
+      status: true
+      method: go build -o ./bin/mrbotchi
     run:
       status: true
-  watcher:
+      method: ./bin/mrbotchi
+    watcher:
     extensions:
     - go
-    - toml
     paths:
     - /
     ignored_paths:
