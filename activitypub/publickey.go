@@ -21,14 +21,14 @@ type (
 
 func (h PublickeyHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	name := chi.URLParam(r, "name")
-	if h.App.Config.User.Name != name {
+	if h.App.Config.Account.Name != name {
 		w.WriteHeader(http.StatusNotFound)
 		return nil
 	}
 
 	id := fmt.Sprintf("https://%s/accounts/%s", h.App.Config.Host, name)
 	endpoint := strings.Join([]string{id, "/publickey"}, "")
-	publickey := securityvocabulary.NewPublicKey(endpoint, id, h.App.Config.User.PublicKey)
+	publickey := securityvocabulary.NewPublicKey(endpoint, id, h.App.Config.Account.PublicKey)
 
 	type alias securityvocabulary.PublicKey
 	p := &struct {

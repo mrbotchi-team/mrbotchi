@@ -12,7 +12,7 @@ type (
 		Port      int            `toml:"port"`
 		PasetoKey string         `toml:"paseto_key"`
 		DB        DatabaseConfig `toml:"database"`
-		User      UserConfig     `toml:"user"`
+		Account   AccountConfig  `toml:"account"`
 		Argon2    Argon2Config   `toml:"argon2"`
 	}
 	DatabaseConfig struct {
@@ -22,9 +22,10 @@ type (
 		Password string `toml:"password"`
 		DBname   string `toml:"dbname"`
 	}
-	UserConfig struct {
+	AccountConfig struct {
 		Name        string `toml:"name"`
 		DisplayName string `toml:"display_name"`
+		Summary     string `toml:"summary"`
 		PublicKey   string `toml:"public_key"`
 		PrivateKey  string `toml:"private_key"`
 	}

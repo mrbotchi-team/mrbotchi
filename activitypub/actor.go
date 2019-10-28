@@ -34,7 +34,7 @@ type (
 
 func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	name := chi.URLParam(r, "name")
-	if h.App.Config.User.Name != name {
+	if h.App.Config.Account.Name != name {
 		w.WriteHeader(http.StatusNotFound)
 		return nil
 	}
@@ -47,7 +47,7 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	outbox := strings.Join([]string{id, "outbox"}, "/")
 
 	publicKeyEndpoint := strings.Join([]string{id, "publickey"}, "/")
-	publickey := securityvocabulary.NewPublicKey(publicKeyEndpoint, id, h.App.Config.User.PublicKey)
+	publickey := securityvocabulary.NewPublicKey(publicKeyEndpoint, id, h.App.Config.Account.PublicKey)
 
 	person := actorResponse{
 		Actor: &activitystreams.Actor{
@@ -60,8 +60,8 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		Liked:                     liked,
 		Inbox:                     inbox,
 		Outbox:                    outbox,
-		PreferredUsername:         h.App.Config.User.DisplayName,
-		Summary:                   "I'm a Botchi",
+		PreferredUsername:         h.App.Config.Account.DisplayName,
+		Summary:                   h.App.Config.Account.Summary,
 		ManuallyApprovesFollowers: false,
 		PublicKey:                 publickey,
 	}

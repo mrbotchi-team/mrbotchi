@@ -63,7 +63,7 @@ func main() {
 	hostMeta := webfinger.HostMetaHandler{Host: app.Config.Host}
 	app.Router.Get("/.well-known/host-meta", handler.HandlerFunc(hostMeta.Get).ServeHTTP)
 
-	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: app.Config.User.Name, Host: app.Config.Host})
+	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: app.Config.Account.Name, Host: app.Config.Host})
 	webfinger.NoTLSHandler = nil
 	app.Router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
