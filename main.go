@@ -24,7 +24,7 @@ var (
 func printWakeupMessage() {
 	fmt.Println("==========================================================================================")
 	fmt.Print("\n")
-	fmt.Println("Developed by silverscat_3")
+	fmt.Println("Developed by MrBotchi team and silverscat_3")
 	fmt.Println(" _ __ ___  _ __")
 	fmt.Println("| '_ ` _ \\| '__|")
 	fmt.Println("| | | | | | |")
@@ -41,11 +41,14 @@ func printWakeupMessage() {
 
 func handlerFactory(app *app.App) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
+		// 小ネタ
 		"/schwimmwagen": &api.SchwimmwagenHandler{handler.HTTPHandler{app}},
 
+		// APIエンドポイント
 		"/users":              &users.UsersHandler{handler.HTTPHandler{app}},
 		"/users/{name}/token": &users.TokenHandler{handler.HTTPHandler{app}},
 
+		// Activitypub
 		"/accounts/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},
 		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{handler.HTTPHandler{app}},
