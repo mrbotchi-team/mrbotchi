@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	wf "github.com/writeas/go-webfinger"
 
 	"github.com/mrbotchi-team/mrbotchi/activitypub"
@@ -13,6 +15,7 @@ import (
 	"github.com/mrbotchi-team/mrbotchi/api/users"
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/handler"
+	"github.com/mrbotchi-team/mrbotchi/models"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
 )
 
@@ -39,20 +42,20 @@ func printWakeupMessage() {
 	fmt.Println("==========================================================================================")
 }
 
-func handlerFactory(app *app.App) map[string]handler.HandlerIf {
+func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
 		// 小ネタ
-		"/schwimmwagen": &api.SchwimmwagenHandler{handler.HTTPHandler{app}},
+		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.HTTPHandler{app}},
 
 		// APIエンドポイント
-		"/users":              &users.UsersHandler{handler.HTTPHandler{app}},
-		"/users/{name}/token": &users.TokenHandler{handler.HTTPHandler{app}},
+		"/users":              &users.UsersHandler{HTTPHandler: handler.HTTPHandler{app}, UserModel: models.NewUserModel(db)},
+		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.HTTPHandler{app}, UserModel: models.NewUserModel(db)},
 
 		// Activitypub
-		"/accounts/{name}":           &activitypub.ActorHandler{handler.HTTPHandler{app}},
-		"/accounts/{name}/inbox":     &activitypub.InboxHandler{handler.HTTPHandler{app}},
-		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{handler.HTTPHandler{app}},
-		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{handler.HTTPHandler{app}},
+		"/accounts/{name}":           &activitypub.ActorHandler{HTTPHandler: handler.HTTPHandler{app}},
+		"/accounts/{name}/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.HTTPHandler{app}},
+		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.HTTPHandler{app}},
+		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.HTTPHandler{app}},
 	}
 
 	return results
@@ -70,7 +73,12 @@ func main() {
 	webfinger.NoTLSHandler = nil
 	app.Router.Get(wf.WebFingerPath, http.HandlerFunc(webfinger.Webfinger))
 
-	hs := handlerFactory(app)
+	db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%v user=%s password=%s dbname=%s sslmode=disable", app.Config.DB.Host, app.Config.DB.Port, app.Config.DB.User, app.Config.DB.Password, app.Config.DB.DBname))
+	if nil != err {
+		log.Fatalln(err)
+	}
+
+	hs := handlerFactory(app, db)
 	for endpoint, h := range hs {
 		app.Router.Get(endpoint, handler.HandlerFunc(h.Get).ServeHTTP)
 		app.Router.Post(endpoint, handler.HandlerFunc(h.Post).ServeHTTP)

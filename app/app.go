@@ -1,8 +1,6 @@
 package app
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/mrbotchi-team/mrbotchi/errors"
@@ -10,8 +8,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
 	"github.com/mrbotchi-team/mrbotchi/config"
 	validate "gopkg.in/go-playground/validator.v9"
 )
@@ -19,7 +15,6 @@ import (
 type App struct {
 	Router   *chi.Mux
 	Config   *config.Config
-	DB       *sqlx.DB
 	Validate *validate.Validate
 }
 
@@ -35,17 +30,12 @@ func NewApp() *App {
 	})
 
 	config := config.LoadConfig()
-	db, err := sqlx.Connect("postgres", fmt.Sprintf("host=%s port=%v user=%s password=%s dbname=%s sslmode=disable", config.DB.Host, config.DB.Port, config.DB.User, config.DB.Password, config.DB.DBname))
-	if nil != err {
-		log.Fatalln(err)
-	}
 
 	validate := validate.New()
 
 	return &App{
 		Router:   router,
 		Config:   config,
-		DB:       db,
 		Validate: validate,
 	}
 }

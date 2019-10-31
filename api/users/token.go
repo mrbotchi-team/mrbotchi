@@ -18,6 +18,7 @@ import (
 type (
 	TokenHandler struct {
 		handler.HTTPHandler
+		UserModel *models.UserModel
 	}
 )
 
@@ -34,8 +35,7 @@ func (h TokenHandler) Get(w http.ResponseWriter, r *http.Request) error {
 
 	userName := chi.URLParam(r, "name")
 
-	var user models.User
-	h.App.DB.Get(&user, "SELECT * FROM users WHERE name=$1", userName)
+	user := h.UserModel.FindByName(userName)
 
 	ok, err := utils.VerifyPassword(password, user.Password)
 	if nil != err {

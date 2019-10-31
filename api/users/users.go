@@ -15,16 +15,13 @@ import (
 type (
 	UsersHandler struct {
 		handler.HTTPHandler
+		UserModel *models.UserModel
 	}
 	userRequest struct {
 		Name     string `json:"name" validate:"required,printascii,min=1,max=16"`
 		Password string `json:"password" validate:"required,printascii"`
 	}
 )
-
-func (h UsersHandler) Get(w http.ResponseWriter, r *http.Request) error {
-	return nil
-}
 
 func (h UsersHandler) Post(w http.ResponseWriter, r *http.Request) error {
 	if !utils.RequestJSON(r) {
@@ -46,12 +43,7 @@ func (h UsersHandler) Post(w http.ResponseWriter, r *http.Request) error {
 		return errors.InvalidRequest()
 	}
 
-	user, err := models.NewUser(userBody.Name, userBody.Password, h.App.Config.Argon2)
-	if nil != err {
-		return err
-	}
-
-	h.App.DB.MustExec("INSERT INTO users (name, password, is_deleted, created_at) VALUES ($1, $2, $3, $4)", user.Name, user.Password, user.IsDeleted, user.CreatedAt)
+	h.UserModel.Insert(userBody.Name, userBody.Password, h.App.Config.Argon2)
 
 	w.WriteHeader(http.StatusCreated)
 
