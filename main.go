@@ -10,11 +10,11 @@ import (
 	_ "github.com/lib/pq"
 	wf "github.com/writeas/go-webfinger"
 
-	"github.com/mrbotchi-team/mrbotchi/activitypub"
-	"github.com/mrbotchi-team/mrbotchi/api"
-	"github.com/mrbotchi-team/mrbotchi/api/users"
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/handler"
+	"github.com/mrbotchi-team/mrbotchi/handler/activitypub"
+	"github.com/mrbotchi-team/mrbotchi/handler/api"
+	"github.com/mrbotchi-team/mrbotchi/handler/api/users"
 	"github.com/mrbotchi-team/mrbotchi/models"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
 )
