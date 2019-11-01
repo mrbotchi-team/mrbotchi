@@ -1,6 +1,8 @@
 package users
 
 import (
+	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 
@@ -62,6 +64,51 @@ func (h TokenHandler) Get(w http.ResponseWriter, r *http.Request) error {
 	} else {
 		return errors.AuthFailed()
 	}
+
+	return nil
+}
+
+func (h TokenHandler) Put(w http.ResponseWriter, r *http.Request) error {
+	body, err := ioutil.ReadAll(r.Body)
+	if nil != err {
+		return errors.InvalidRequest()
+	}
+	defer r.Body.Close()
+
+	userName := chi.URLParam(r, "name")
+
+	symmetricKey := []byte(h.App.Config.PasetoKey)
+
+	var token paseto.JSONToken
+	if err := paseto.NewV2().Decrypt(string(body), symmetricKey, &token, nil); nil != err {
+		log.Println(err)
+		return errors.InvalidRequest()
+	}
+
+	if time.Now().After(token.Expiration) {
+		return errors.InvalidRequest()
+	}
+
+	if userName != token.Subject {
+		return errors.InvalidRequest()
+	}
+
+	now := time.Now()
+	exp := now.Add(24 * time.Hour)
+	nbt := now
+
+	newToken := paseto.JSONToken{
+		Subject:    userName,
+		IssuedAt:   now,
+		Expiration: exp,
+		NotBefore:  nbt,
+	}
+
+	response, err := paseto.NewV2().Encrypt(symmetricKey, newToken, nil)
+	if nil != err {
+		return err
+	}
+	utils.WriteBody(w, []byte(response), http.StatusOK, "text/plain")
 
 	return nil
 }
