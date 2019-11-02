@@ -39,7 +39,7 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		return nil
 	}
 
-	id := fmt.Sprintf("https://%s/%s", h.App.Config.Host, name)
+	id := fmt.Sprintf("https://%s/accounts/%s", h.App.Config.Host, name)
 	following := strings.Join([]string{id, "following"}, "/")
 	followers := strings.Join([]string{id, "followers"}, "/")
 	liked := strings.Join([]string{id, "liked"}, "/")
@@ -53,14 +53,14 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 		Actor: &activitystreams.Actor{
 			ID:   id,
 			Type: "Person",
-			Name: name,
+			Name: h.App.Config.Account.DisplayName,
 		},
 		Following:                 following,
 		Followers:                 followers,
 		Liked:                     liked,
 		Inbox:                     inbox,
 		Outbox:                    outbox,
-		PreferredUsername:         h.App.Config.Account.DisplayName,
+		PreferredUsername:         h.App.Config.Account.Name,
 		Summary:                   h.App.Config.Account.Summary,
 		ManuallyApprovesFollowers: false,
 		PublicKey:                 publickey,
