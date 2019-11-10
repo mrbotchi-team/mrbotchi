@@ -49,3 +49,9 @@ func (h HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, errors.InternalServerError())
 	}
 }
+
+func NewHandler(app *app.App) HTTPHandler {
+	return HTTPHandler{
+		App: app,
+	}
+}

@@ -45,17 +45,17 @@ func printWakeupMessage() {
 func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
 		// 小ネタ
-		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.HTTPHandler{app}},
+		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.NewHandler(app)},
 
 		// APIエンドポイント
-		"/users":              &users.UsersHandler{HTTPHandler: handler.HTTPHandler{app}, UserModel: models.NewUserModel(db)},
-		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.HTTPHandler{app}, UserModel: models.NewUserModel(db)},
+		"/users":              &users.UsersHandler{HTTPHandler: handler.NewHandler(app), UserModel: models.NewUserModel(db)},
+		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.NewHandler(app), UserModel: models.NewUserModel(db)},
 
 		// Activitypub
-		"/accounts/{name}":           &activitypub.ActorHandler{HTTPHandler: handler.HTTPHandler{app}},
-		"/accounts/{name}/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.HTTPHandler{app}},
-		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.HTTPHandler{app}},
-		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.HTTPHandler{app}},
+		"/accounts/{name}":           &activitypub.ActorHandler{HTTPHandler: handler.NewHandler(app)},
+		"/accounts/{name}/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.NewHandler(app)},
+		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.NewHandler(app)},
+		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.NewHandler(app)},
 	}
 
 	return results
