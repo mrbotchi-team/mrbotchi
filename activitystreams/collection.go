@@ -8,8 +8,8 @@ type Collection struct {
 	ID      string                      `json:"id"`
 	Type    string                      `json:"type"`
 	Total   int                         `json:"totalItems"`
-	Current properties.ObjectProperty   `json:"current,omitempt"`
-	First   properties.ObjectProperty   `json:"first,omitempt"`
-	Last    properties.ObjectProperty   `json:"last,omitempt"`
+	Current properties.ObjectProperty   `json:"current,omitempty"`
+	First   properties.ObjectProperty   `json:"first,omitempty"`
+	Last    properties.ObjectProperty   `json:"last,omitempty"`
 	Items   []properties.ObjectProperty `json:"items"`
 }

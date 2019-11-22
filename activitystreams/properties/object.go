@@ -6,10 +6,12 @@ import (
 )
 
 type ObjectProperty struct {
-	ID   string   `json:"id"`
-	Type string   `json:"type"`
-	Name string   `json:"name"`
-	IRI  *url.URL `json:"-"`
+	ID     string         `json:"id"`
+	Type   string         `json:"type"`
+	Name   string         `json:"name,omitempty"`
+	Actor  *ActorProperty `json:"actor,omitempty"`
+	Object string         `json:"object,omitempty"`
+	IRI    *url.URL       `json:"-"`
 }
 
 func (a *ObjectProperty) UnmarshalJSON(data []byte) error {
