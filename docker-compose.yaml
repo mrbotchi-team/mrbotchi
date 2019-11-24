@@ -23,10 +23,10 @@ services:
       - internal_network
 
   mrbotchi:
-    build:
-      context: .
-      target: dev
+    # build: .
+    image: cosmtrek/air
     restart: always
+    working_dir: /go/src/github.com/mrbotchi-team/mrbotchi
     links:
       - postgres
     volumes:

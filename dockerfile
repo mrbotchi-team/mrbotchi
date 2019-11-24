@@ -1,13 +1,3 @@
-# 開発環境
-FROM golang:1.13 AS dev
-
-WORKDIR /go/src/github.com/mrbotchi-team/mrbotchi
-VOLUME /go/src/github.com/mrbotchi-team/mrbotchi
-
-RUN go get -u github.com/oxequa/realize
-
-CMD [ "realize", "start", "--run" ]
-
 FROM golang:1.13 AS build
 
 WORKDIR /go/src/github.com/mrbotchi-team/mrbotchi

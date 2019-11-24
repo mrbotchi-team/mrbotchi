@@ -16,3 +16,4 @@ vendor/
 
 bin/
 db/
+tmp/
