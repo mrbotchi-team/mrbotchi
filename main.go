@@ -52,10 +52,10 @@ func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
 		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.NewHandler(app), UserModel: models.NewUserModel(db)},
 
 		// Activitypub
-		"/accounts/{name}":           &activitypub.ActorHandler{HTTPHandler: handler.NewHandler(app)},
-		"/accounts/{name}/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.NewHandler(app)},
-		"/accounts/{name}/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.NewHandler(app)},
-		"/accounts/{name}/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.NewHandler(app)},
+		"/":          &activitypub.ActorHandler{HTTPHandler: handler.NewHandler(app)},
+		"/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.NewHandler(app)},
+		"/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.NewHandler(app)},
+		"/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.NewHandler(app)},
 	}
 
 	return results
@@ -87,5 +87,6 @@ func main() {
 	}
 
 	fmt.Println("I'm HTTP listen on :" + strconv.Itoa(app.Config.Port) + ". Have a nice day!")
-	log.Fatalln(http.ListenAndServe(":"+strconv.Itoa(app.Config.Port), app.Router))
+	go log.Fatalln(http.ListenAndServe(":"+strconv.Itoa(app.Config.Port), app.Router))
+	app.ActivityDispatcher.Start()
 }

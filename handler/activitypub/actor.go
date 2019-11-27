@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/go-chi/chi"
-
 	"github.com/mrbotchi-team/mrbotchi/activitystreams"
 	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/securityvocabulary"
@@ -23,8 +21,6 @@ type (
 		Following                 string                        `json:"following"`
 		Followers                 string                        `json:"followers"`
 		Liked                     string                        `json:"liked"`
-		Inbox                     string                        `json:"inbox"`
-		Outbox                    string                        `json:"outbox"`
 		PreferredUsername         string                        `json:"preferredUsername"`
 		Summary                   string                        `json:"summary"`
 		ManuallyApprovesFollowers bool                          `json:"manuallyApprovesFollowers"`
@@ -33,13 +29,7 @@ type (
 )
 
 func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
-	name := chi.URLParam(r, "name")
-	if h.App.Config.Account.Name != name {
-		w.WriteHeader(http.StatusNotFound)
-		return nil
-	}
-
-	id := fmt.Sprintf("https://%s/accounts/%s", h.App.Config.Host, name)
+	id := fmt.Sprintf("https://%s", h.App.Config.Host)
 	following := strings.Join([]string{id, "following"}, "/")
 	followers := strings.Join([]string{id, "followers"}, "/")
 	liked := strings.Join([]string{id, "liked"}, "/")
@@ -51,15 +41,15 @@ func (h ActorHandler) Get(w http.ResponseWriter, r *http.Request) error {
 
 	person := actorResponse{
 		Actor: &activitystreams.Actor{
-			ID:   id,
-			Type: "Person",
-			Name: h.App.Config.Account.DisplayName,
+			ID:     id,
+			Type:   "Person",
+			Name:   h.App.Config.Account.DisplayName,
+			Inbox:  inbox,
+			Outbox: outbox,
 		},
 		Following:                 following,
 		Followers:                 followers,
 		Liked:                     liked,
-		Inbox:                     inbox,
-		Outbox:                    outbox,
 		PreferredUsername:         h.App.Config.Account.Name,
 		Summary:                   h.App.Config.Account.Summary,
 		ManuallyApprovesFollowers: false,
