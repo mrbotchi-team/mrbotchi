@@ -48,7 +48,7 @@ services:
       - internal_network
       - external_network
     environment:
-      DOMAINS: 'mrbotchi.test -> http://mrbotchi:3000'
+      DOMAINS: 'alcyone.pleiades.local -> http://mrbotchi:3000'
       STAGE: 'local'
 
 networks: 

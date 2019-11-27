@@ -17,3 +17,4 @@ vendor/
 bin/
 db/
 tmp/
+.config/mrbotchi.toml
