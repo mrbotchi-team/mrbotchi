@@ -70,7 +70,7 @@ func AuthFailed() APIError {
 		ErrorID: "AUTH_FAILED",
 		HTTPError: HTTPError{
 			StatusCode: http.StatusForbidden,
-			Message:    "username or password is incorrect.",
+			Message:    "Username or password is incorrect.",
 		},
 	}
 }

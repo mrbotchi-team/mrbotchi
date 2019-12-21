@@ -87,6 +87,5 @@ func main() {
 	}
 
 	fmt.Println("I'm HTTP listen on :" + strconv.Itoa(app.Config.Port) + ". Have a nice day!")
-	go log.Fatalln(http.ListenAndServe(":"+strconv.Itoa(app.Config.Port), app.Router))
-	app.ActivityDispatcher.Start()
+	log.Fatalln(http.ListenAndServe(":"+strconv.Itoa(app.Config.Port), app.Router))
 }
