@@ -8,6 +8,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/silverscat-3/hostmeta"
+	hmh "github.com/silverscat-3/hostmeta/handlers"
 	wf "github.com/writeas/go-webfinger"
 
 	"github.com/mrbotchi-team/mrbotchi/app"
@@ -66,8 +68,14 @@ func main() {
 
 	app := app.NewApp()
 
-	hostMeta := webfinger.HostMetaHandler{Host: app.Config.Host}
-	app.Router.Get("/.well-known/host-meta", handler.HandlerFunc(hostMeta.Get).ServeHTTP)
+	links := []*hostmeta.Link{
+		hostmeta.NewLink("lrdd", "application/xrd+xml", "", fmt.Sprintf("https://%s/.well-known/webfinger?resource={uri}", app.Config.Host)),
+	}
+	hostMeta := hmh.HostMetaHandler{Links: links}
+	hostMetaJSON := hmh.HostMetaJSONHandler{Links: links}
+
+	app.Router.Get(hostmeta.HostMetaPath, http.HandlerFunc(hostMeta.ServeHTTP))
+	app.Router.Get(hostmeta.HostMetaJSONPath, http.HandlerFunc(hostMetaJSON.ServeHTTP))
 
 	webfinger := wf.Default(webfinger.WebfingerResolver{UserName: app.Config.Account.Name, Host: app.Config.Host})
 	webfinger.NoTLSHandler = nil
