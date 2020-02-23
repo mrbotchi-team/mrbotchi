@@ -10,6 +10,26 @@ MrBotchi is federated microblogging platform *for single-user.* Since it exists 
 
 It's a word that means "people without friends" in Japanese.
 
+== Feature
+* [ ] ActivityPub compatible
+* [ ] Mastodon compatible WebAPI
+* [ ] Misskey compatible emoji reaction
+* [ ] Plugin system
+* [ ] Multi-user (NOT Multi-account)
+
+== VS.
+|===
+| ^|Mastodon ^|Misskey ^|MrBotchi
+
+>s|Quote post ^.^|No ^.^|Yes ^.^|Yes
+>s|Emoji reaction ^.^|No ^.^|Yes ^.^|Yes
+>s|Reversi ^.^|No ^.^|Yes ^.^|No
+>s|Very cute Showgirl ^.^|No ^.^|Yes ^.^|No
+>s|Very, very cute Schwimmwagen ^.^|No ^.^|No ^.^s|YEEEEEES
+|===
+
+TIP: These items are still in the planning stages and are not necessarily implemented.
+
 == License
 
 Licensed under the GNU Affero General Public License Version 3(link:./LICENSE[LICENSE] or https://opensource.org/licenses/AGPL-3.0)
