@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/mrbotchi-team/mrbotchi/utils"
+	"gopkg.in/spacemonkeygo/httpsig.v0"
 
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/errors"
@@ -17,7 +18,8 @@ type (
 		Delete(w http.ResponseWriter, r *http.Request) error
 	}
 	HTTPHandler struct {
-		App *app.App
+		App    *app.App
+		Signer *httpsig.Signer
 	}
 	HandlerFunc func(http.ResponseWriter, *http.Request) error
 )
@@ -50,8 +52,9 @@ func (h HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func NewHandler(app *app.App) HTTPHandler {
+func NewHandler(app *app.App, signer *httpsig.Signer) HTTPHandler {
 	return HTTPHandler{
-		App: app,
+		App:    app,
+		Signer: signer,
 	}
 }

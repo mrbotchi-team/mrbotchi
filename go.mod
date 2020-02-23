@@ -15,4 +15,5 @@ require (
 	github.com/writeas/go-webfinger v1.1.0
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72
 	gopkg.in/go-playground/validator.v9 v9.31.0
+	gopkg.in/spacemonkeygo/httpsig.v0 v0.0.0-20170228231032-6732593ec966
 )
