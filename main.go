@@ -11,6 +11,7 @@ import (
 	"github.com/silverscat-3/hostmeta"
 	hmh "github.com/silverscat-3/hostmeta/handlers"
 	wf "github.com/writeas/go-webfinger"
+	"gopkg.in/spacemonkeygo/httpsig.v0"
 
 	"github.com/mrbotchi-team/mrbotchi/app"
 	"github.com/mrbotchi-team/mrbotchi/handler"
@@ -45,19 +46,21 @@ func printWakeupMessage() {
 }
 
 func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
+	signer := httpsig.NewSigner("", app.Config.Account.PrivateKey, httpsig.RSASHA256, nil)
+
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
 		// 小ネタ
-		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.NewHandler(app)},
+		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.NewHandler(app, signer)},
 
 		// APIエンドポイント
-		"/users":              &users.UsersHandler{HTTPHandler: handler.NewHandler(app), UserModel: models.NewUserModel(db)},
-		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.NewHandler(app), UserModel: models.NewUserModel(db)},
+		"/users":              &users.UsersHandler{HTTPHandler: handler.NewHandler(app, signer), UserModel: models.NewUserModel(db)},
+		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.NewHandler(app, signer), UserModel: models.NewUserModel(db)},
 
 		// Activitypub
-		"/":          &activitypub.ActorHandler{HTTPHandler: handler.NewHandler(app)},
-		"/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.NewHandler(app)},
-		"/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.NewHandler(app)},
-		"/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.NewHandler(app)},
+		"/":          &activitypub.ActorHandler{HTTPHandler: handler.NewHandler(app, signer)},
+		"/inbox":     &activitypub.InboxHandler{HTTPHandler: handler.NewHandler(app, signer)},
+		"/outbox":    &activitypub.OutboxHandler{HTTPHandler: handler.NewHandler(app, signer)},
+		"/publickey": &activitypub.PublickeyHandler{HTTPHandler: handler.NewHandler(app, signer)},
 	}
 
 	return results
@@ -68,6 +71,10 @@ func main() {
 
 	app := app.NewApp()
 
+	startHTTP(app)
+}
+
+func startHTTP(app *app.App) {
 	links := []*hostmeta.Link{
 		hostmeta.NewLink("lrdd", "application/xrd+xml", "", fmt.Sprintf("https://%s/.well-known/webfinger?resource={uri}", app.Config.Host)),
 	}
