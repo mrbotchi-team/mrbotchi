@@ -17,6 +17,7 @@ import (
 	"github.com/mrbotchi-team/mrbotchi/handler"
 	"github.com/mrbotchi-team/mrbotchi/handler/activitypub"
 	"github.com/mrbotchi-team/mrbotchi/handler/api"
+	"github.com/mrbotchi-team/mrbotchi/handler/api/instance"
 	"github.com/mrbotchi-team/mrbotchi/handler/api/users"
 	"github.com/mrbotchi-team/mrbotchi/models"
 	"github.com/mrbotchi-team/mrbotchi/webfinger"
@@ -53,6 +54,7 @@ func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
 		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.NewHandler(app, signer)},
 
 		// APIエンドポイント
+		"/instance/specs":     &instance.SpecsHandler{HTTPHandler: handler.NewHandler(app, signer)},
 		"/users":              &users.UsersHandler{HTTPHandler: handler.NewHandler(app, signer), UserModel: models.NewUserModel(db)},
 		"/users/{name}/token": &users.TokenHandler{HTTPHandler: handler.NewHandler(app, signer), UserModel: models.NewUserModel(db)},
 

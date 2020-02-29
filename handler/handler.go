@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/mrbotchi-team/mrbotchi/utils"
@@ -43,6 +44,9 @@ func (h HTTPHandler) Delete(w http.ResponseWriter, r *http.Request) error {
 func (h HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := h(w, r)
 	if nil != err {
+		log.Println("Oops... Something worng...")
+		log.Println("Error:", err)
+
 		if err, ok := err.(errors.APIError); ok {
 			utils.WriteError(w, err)
 			return

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -28,8 +27,6 @@ func WriteError(w http.ResponseWriter, e error) {
 		WriteBody(w, []byte(err.Message), err.StatusCode, "text/plain") //nolint
 		return
 	}
-
-	log.Println("Error:", e)
 
 	err := errors.InternalServerError()
 	body, _ := json.Marshal(err)
