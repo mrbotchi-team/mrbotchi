@@ -24,31 +24,31 @@ import (
 )
 
 var (
-	version  string
-	revision string
+	version  string = "Schwimmwagen"
+	revision string = "Typ 166"
 )
 
 func printWakeupMessage() {
 	fmt.Println("==========================================================================================")
 	fmt.Print("\n")
 	fmt.Println("Developed by MrBotchi team and silverscat_3")
-	fmt.Println(" _ __ ___  _ __")
-	fmt.Println("| '_ ` _ \\| '__|")
-	fmt.Println("| | | | | | |")
-	fmt.Println("|_| |_| |_|_|          _       _     _")
-	fmt.Println("          | |         | |     | |   (_)")
-	fmt.Println("          | |__   ___ | |_ ___| |__  _")
-	fmt.Println("          | '_ \\ / _ \\| __/ __| '_ \\| |")
-	fmt.Println("          | |_) | (_) | || (__| | | | |")
-	fmt.Println("          |_.__/ \\___/ \\__\\___|_| |_|_|")
+
+	fmt.Println("  _ __ ___   _ __                   ")
+	fmt.Println(" | '_ ` _ \\ | '__|                  ")
+	fmt.Println(" | | | | | || | _                   ")
+	fmt.Println(" |_|_|_| |_||_|(_)        _      _  ")
+	fmt.Println(" |  _ \\        | |       | |    (_) ")
+	fmt.Println(" | |_) |  ___  | |_  ___ | |__   _  ")
+	fmt.Println(" |  _ <  / _ \\ | __|/ __|| '_ \\ | | ")
+	fmt.Println(" | |_) || (_) || |_| (__ | | | || | ")
+	fmt.Println(" |____/  \\___/  \\__|\\___||_| |_||_| ")
+
 	fmt.Println("Version:", version, ",", "Revision:", revision)
 	fmt.Print("\n")
 	fmt.Println("==========================================================================================")
 }
 
-func handlerFactory(app *app.App, db *sqlx.DB) map[string]handler.HandlerIf {
-	signer := httpsig.NewSigner("", app.Config.Account.PrivateKey, httpsig.RSASHA256, nil)
-
+func handlerFactory(app *app.App, db *sqlx.DB, signer *httpsig.Signer) map[string]handler.HandlerIf {
 	var results map[string]handler.HandlerIf = map[string]handler.HandlerIf{
 		// 小ネタ
 		"/schwimmwagen": &api.SchwimmwagenHandler{HTTPHandler: handler.NewHandler(app, signer)},
@@ -95,7 +95,9 @@ func startHTTP(app *app.App) {
 		log.Fatalln(err)
 	}
 
-	hs := handlerFactory(app, db)
+	signer := httpsig.NewSigner("", app.Config.Account.PrivateKey, httpsig.RSASHA256, nil)
+
+	hs := handlerFactory(app, db, signer)
 	for endpoint, h := range hs {
 		app.Router.Get(endpoint, handler.HandlerFunc(h.Get).ServeHTTP)
 		app.Router.Post(endpoint, handler.HandlerFunc(h.Post).ServeHTTP)
