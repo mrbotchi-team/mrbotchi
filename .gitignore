@@ -18,3 +18,5 @@ bin/
 db/
 tmp/
 .config/mrbotchi.toml
+.config/private.pem
+.config/public.pem

@@ -22,5 +22,3 @@ key_length = 32
 name = "mrbotchi"
 display_name = "MrBotchiのおっさん"
 summary = "デミオ食べたい"
-public_key = ""
-private_key = ""

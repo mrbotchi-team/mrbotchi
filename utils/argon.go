@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mrbotchi-team/mrbotchi/config"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -16,7 +15,15 @@ var (
 	IncompatibleVersionError = errors.New("Incompatible version of argon2.")
 )
 
-func GenerateHashedPassword(password string, param config.Argon2Config) (string, error) {
+type Argon2Param struct {
+	Memory      uint32 `toml:"memory_cost"`
+	Iterations  uint32 `toml:"iteration_cost"`
+	Parallelism uint8  `toml:"parallelism"`
+	SaltLength  uint32 `toml:"salt_length"`
+	KeyLength   uint32 `toml:"key_length"`
+}
+
+func GenerateHashedPassword(password string, param *Argon2Param) (string, error) {
 	salt, err := GenerateRandomBytes(param.SaltLength)
 	if nil != err {
 		return "", err
@@ -45,7 +52,7 @@ func VerifyPassword(password, encodedHash string) (bool, error) {
 	return false, nil
 }
 
-func decodeHash(encodedHash string) (*config.Argon2Config, []byte, []byte, error) {
+func decodeHash(encodedHash string) (*Argon2Param, []byte, []byte, error) {
 	vals := strings.Split(encodedHash, "$")
 	if 6 != len(vals) {
 		return nil, nil, nil, InvalidHashError
@@ -59,7 +66,7 @@ func decodeHash(encodedHash string) (*config.Argon2Config, []byte, []byte, error
 		return nil, nil, nil, IncompatibleVersionError
 	}
 
-	param := &config.Argon2Config{}
+	param := &Argon2Param{}
 	if _, err := fmt.Sscanf(vals[3], "m=%d,t=%d,p=%d", &param.Memory, &param.Iterations, &param.Parallelism); nil != err {
 		return nil, nil, nil, err
 	}
