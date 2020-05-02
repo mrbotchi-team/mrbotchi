@@ -1,12 +1,11 @@
 package handlers
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
 	me "github.com/mrbotchi-team/mrbotchi/error"
+	"github.com/mrbotchi-team/mrbotchi/utils/response"
 )
 
 type (
@@ -58,22 +57,11 @@ func (hf HTTPHandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err, ok := err.(*me.APIError); ok {
 			log.Printf("error: %s: %s", err.ID, err.Message)
 
-			errID := err.ID
-			body, err := json.Marshal(err)
-			if nil != err {
-				// もうめんどうみきれよう
-				// なんで自分が定義した構造体をエンコードできないんですか(呆れ)
-				log.Println("error: ", err)
-
-				writeResponse(w, http.StatusInternalServerError, "text/plain", []byte(fmt.Sprintf("The encoding of the error message failed! WTF?????\n Anyway, here's the error ID: %s", errID)))
-				return
-			}
-
-			writeResponse(w, status, "application/json", body)
+			response.WriteJSONResponse(w, status, err)
 		} else {
 			log.Println("error: ", err)
 
-			writeResponse(w, status, "text/plain", []byte(http.StatusText(status)))
+			response.WriteResponse(w, status, "text/plain", []byte(http.StatusText(status)))
 		}
 		return
 	}
@@ -104,13 +92,6 @@ func (hf HTTPHandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if body, ok := res.([]byte); ok {
 		w.Write(body)
 	} else {
-		writeResponse(w, http.StatusInternalServerError, "text/plain", []byte(http.StatusText(http.StatusInternalServerError)))
+		response.WriteResponse(w, http.StatusInternalServerError, "text/plain", []byte(http.StatusText(http.StatusInternalServerError)))
 	}
-}
-
-func writeResponse(w http.ResponseWriter, status int, contentType string, body []byte) {
-	w.Header().Set("Content-Type", contentType+"; charset=utf-8")
-	w.WriteHeader(status)
-
-	w.Write(body)
 }

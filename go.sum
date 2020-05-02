@@ -1,5 +1,13 @@
+github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
+github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/captncraig/cors v0.0.0-20190703115713-e80254a89df1 h1:AFSJaASPGYNbkUa5c8ZybrcW9pP3Cy7+z5dnpcc/qG8=
+github.com/captncraig/cors v0.0.0-20190703115713-e80254a89df1/go.mod h1:EIlIeMufZ8nqdUhnesledB15xLRl4wIJUppwDLPrdrQ=
 github.com/comail/colog v0.0.0-20160416085026-fba8e7b1f46c h1:bzYQ6WpR+t35/y19HUkolcg7SYeWZ15IclC9Z4naGHI=
 github.com/comail/colog v0.0.0-20160416085026-fba8e7b1f46c/go.mod h1:1WwgAwMKQLYG5I2FBhpVx94YTOAuB2W59IZ7REjSE6Y=
 github.com/go-chi/chi v1.0.0 h1:s/kv1cTXfivYjdKJdyUzNGyAWZ/2t7duW1gKn5ivu+c=
 github.com/go-chi/chi v4.1.0+incompatible h1:ETj3cggsVIY2Xao5ExCu6YhEh5MD6JTfcBzS37R260w=
 github.com/go-chi/chi v4.1.0+incompatible/go.mod h1:eB3wogJHnLi3x/kFX2A+IbTBlXxmMeXJVKy9tTv1XzQ=
+github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
+github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
+github.com/writeas/go-webfinger v1.1.0 h1:MzNyt0ry/GMsRmJGftn2o9mPwqK1Q5MLdh4VuJCfb1Q=
+github.com/writeas/go-webfinger v1.1.0/go.mod h1:w2VxyRO/J5vfNjJHYVubsjUGHd3RLDoVciz0DE3ApOc=

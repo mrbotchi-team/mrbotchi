@@ -1,0 +1,6 @@
+host = "localhost:3000"
+
+[actor]
+preferredUsername = "schwimmwagen"
+name = "シュビムワーゲン@ドイツ国防軍"
+summary = "結局「Wagen」ってどう発音すんの?"
