@@ -9,6 +9,10 @@ LDFLAGS:= -ldflags="-s -w -X \"main.version=$(VERSION)\" -X \"main.revision=$(RE
 bin/$(NAME): $(SRCS)
 	CGO_ENABLED=0 go build -a -tags netgo -installsuffix netgo $(LDFLAGS) -o bin/$(NAME).out
 
+.PHONY: debug
+debug:
+	dlv debug main.go -- -c ./etc/mrbotchi.toml
+
 .PHONY: clean
 clean:
 	rm -rf bin/*
