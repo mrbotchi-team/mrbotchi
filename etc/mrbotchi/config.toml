@@ -1,4 +1,5 @@
-host = "localhost:3000"
+host = "https://localhost:3000/"
+port = 3000
 
 [actor]
 preferredUsername = "schwimmwagen"

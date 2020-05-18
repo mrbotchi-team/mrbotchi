@@ -11,7 +11,7 @@ bin/$(NAME): $(SRCS)
 
 .PHONY: debug
 debug:
-	dlv debug main.go -- -c ./etc/mrbotchi.toml
+	dlv debug main.go -- -c ./etc/mrbotchi/config.toml
 
 .PHONY: clean
 clean:
